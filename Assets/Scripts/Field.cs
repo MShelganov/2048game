@@ -142,12 +142,12 @@ public class Field : MonoBehaviour
                 }
 
                 if (lose && field[i, j].IsEmpty ||
-                    FindCellToMerge(field[i, j], Vector2.left) ||
-                    FindCellToMerge(field[i, j], Vector2.right) ||
-                    FindCellToMerge(field[i, j], Vector2.up) ||
-                    FindCellToMerge(field[i, j], Vector2.down))
+                    FindCellToMerge(field[i, j], Vector2.left) != null ||
+                    FindCellToMerge(field[i, j], Vector2.right) != null ||
+                    FindCellToMerge(field[i, j], Vector2.up) != null ||
+                    FindCellToMerge(field[i, j], Vector2.down) != null)
                 {
-                    lose = true;
+                    lose = false;
                 }
             }
         }

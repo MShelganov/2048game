@@ -125,7 +125,6 @@ public class Cell : MonoBehaviour
         someCell.IncreaseValue();
         // Делаем плитку пустой.
         SetValue(0);
-        UpdateCell();
     }
 
     /// <summary>
@@ -134,9 +133,15 @@ public class Cell : MonoBehaviour
     /// <param name="target"></param>
     public void MoveToCell(Cell target)
     {
-        target.SetValue(Count, target.X, target.Y);
-        SetValue(0);
-        UpdateCell();
+        Vector2 targetPos = target.transform.position;
+        Vector3 thisPos = this.transform.localPosition;
+        LeanTween.move(this.gameObject, targetPos, .2f).setOnComplete(() => {
+            this.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
+            this.transform.localPosition = thisPos;
+            target.SetValue(Count);
+            SetValue(0);
+        }
+        );
     }
 
     /// <summary>
@@ -155,13 +160,13 @@ public class Cell : MonoBehaviour
                 image.sprite = SpriteManager.Instance.Default;
             else
                 image.sprite = SpriteManager.Instance.Sprites[(Count - 1)];
-            LeanTween.size(image.GetComponent<RectTransform>(), new Vector2(Size, Size), .3f).setEaseInBounce();
+            LeanTween.size(image.GetComponent<RectTransform>(), new Vector2(Size, Size), .4f).setEaseInBounce();
         }
         if (number != null)
         {
             number.text = Value.ToString();
             number.rectTransform.sizeDelta = new Vector2(Size, Size);
-            number.autoSizeTextContainer = true;
+            number.fontSize = Size / 2;
         }
     }
 }
